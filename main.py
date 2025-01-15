@@ -1,9 +1,5 @@
-import kagglehub
-import pandas as pd
+from pipeline_manager import run_load_data_flow
 
-directory_path = kagglehub.dataset_download("asaniczka/top-spotify-songs-in-73-countries-daily-updated")
-csv_path = directory_path + '/' + 'universal_top_spotify_songs.csv'
 
-df = pd.read_csv(csv_path)
-
-print(len(df))
+if __name__ == "__main__":
+    run_load_data_flow()
