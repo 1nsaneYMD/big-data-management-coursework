@@ -1,14 +1,11 @@
-from spark_session_client import SparkSessionClient
-from pyspark.sql import DataFrame
+from pyspark.sql import DataFrame, SparkSession
 
 class Repository:
-    def __init__(self):
-        self.spark_session = SparkSessionClient().get_session()
+    def __init__(self, spark: SparkSession):
+        self.spark = spark
 
-    def save_as_parquet(self, file_name, df: DataFrame):
-        output_file = '{}.parquet'.format(file_name)
-        df.write.mode('overwrite').parquet(output_file)
+    def save_parquet(self, file_name: str, df: DataFrame):
+        df.write.mode('overwrite').parquet(f'{file_name}.parquet')
     
     def load_parquet(self, file_name):
-        input_file = '{}.parquet'.format(file_name)
-        return self.spark_session.read.parquet(input_file)
+        return self.spark.read.parquet(f'{file_name}.parquet')

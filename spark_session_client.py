@@ -2,14 +2,13 @@ from pyspark.sql import SparkSession
 
 
 class SparkSessionClient:
-    def __init__(self):
-        self.instance = None
+    _instance = None
 
-    def get_session(self) -> SparkSession:
-        if self.instance is None:
-            self.instance = SparkSession.builder \
+    @classmethod
+    def get_session(cls) -> SparkSession:
+        if cls._instance is None:
+            cls._instance = SparkSession.builder \
                 .appName('Spotify Analysis') \
                 .config('spark.log.level', 'ERROR') \
                 .getOrCreate()
-            
-        return self.instance
+        return cls._instance

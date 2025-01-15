@@ -2,11 +2,8 @@ from pyspark.sql import SparkSession
 
 
 class DataLoader:
-    def __init__(self, spark_session: SparkSession):
-        self.spark_session = spark_session
+    def __init__(self, spark: SparkSession):
+        self.spark = spark
 
-    def load_data(self):
-        songs_df = self.spark_session.read.csv('test_data.csv', header=True)
-
-        # TODO: Filter and clean data
-        return songs_df
+    def load_csv(self, file_path: str):
+        return self.spark.read.csv(file_path, header=True)

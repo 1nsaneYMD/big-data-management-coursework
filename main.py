@@ -1,5 +1,5 @@
-from pipeline_manager import run_load_data_flow
+from pipeline import spotify_pipeline
 
 
 if __name__ == "__main__":
-    run_load_data_flow()
+    spotify_pipeline(input_path='test_data.csv', output_name='spotify')
