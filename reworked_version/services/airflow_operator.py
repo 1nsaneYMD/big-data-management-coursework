@@ -1,5 +1,5 @@
 from airflow.operators.python import PythonOperator
-from .analysis_service import AnalysisService
+from services.analysis_service import AnalysisService
 
 class AirflowOperator:
     def __init__(self, dag):

@@ -1,4 +1,4 @@
-from .spark_service import SparkService
+from services.spark_service import SparkService
 
 class ETLService:
     def __init__(self):
