@@ -1,4 +1,5 @@
 from services.spark_service import SparkService
+from pyspark.sql import DataFrame
 
 class ETLService:
     def __init__(self):
@@ -6,10 +7,13 @@ class ETLService:
 
     def load_csv_to_parquet(self, input_path='data/spotify_tracks.csv', output_path='data/spotify_tracks.parquet'):
         df = self.spark.read.csv(input_path, header=True, inferSchema=True)
-        df.write.mode('overwrite').parquet(output_path)
+        self.save_as_parquest(df, output_path)
 
     def load_parquet(self, input_path='data/spotify_tracks.parquet'):
         return self.spark.read.parquet(input_path)
+    
+    def save_as_parquest(self, df: DataFrame, output_path):
+        df.write.mode('overwrite').parquet(output_path)
 
 if __name__ == '__main__':
     etl_service = ETLService()

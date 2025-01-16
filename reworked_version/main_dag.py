@@ -9,5 +9,4 @@ with DAG(
     catchup=False
 ) as dag:
     data_pipeline = AirflowOperator(dag)
-
     data_pipeline.run_pipeline()
