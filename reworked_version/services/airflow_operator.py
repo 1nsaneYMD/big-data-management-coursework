@@ -16,6 +16,9 @@ class AirflowOperator:
     def load_data(self):
         return self.create_operator('load_data', self.analysis_service.load_data)
     
+    def preprocess_data_task(self):
+        return self.create_operator('preprocess_data', self.analysis_service.preprocess_data)
+    
     def top_tracks_task(self):
         return self.create_operator('analyze_top_tracks', self.analysis_service.top_tracks)
     
@@ -23,4 +26,4 @@ class AirflowOperator:
         return self.create_operator('average_metrics', self.analysis_service.average_metrics)
     
     def run_pipeline(self):
-        self.load_data() >> [self.top_tracks_task(), self.average_metrics_task()]
+        self.load_data() >> self.preprocess_data_task() >> [self.top_tracks_task(), self.average_metrics_task()]

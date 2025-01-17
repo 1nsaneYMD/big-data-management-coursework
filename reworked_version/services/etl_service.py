@@ -15,6 +15,9 @@ class ETLService:
     def save_as_parquest(self, df: DataFrame, output_path):
         df.write.mode('overwrite').parquet(output_path)
 
+    def register_udf_function(self, name, f):
+        return self.spark.udf.register(name, f)
+
 if __name__ == '__main__':
     etl_service = ETLService()
     etl_service.load_csv_to_parquet()
