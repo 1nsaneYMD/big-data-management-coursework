@@ -13,17 +13,28 @@ class AirflowOperator:
             dag=self.dag
         )
     
-    def load_data(self):
-        return self.create_operator('load_data', self.analysis_service.load_data)
-    
     def preprocess_data_task(self):
         return self.create_operator('preprocess_data', self.analysis_service.preprocess_data)
     
-    def top_tracks_task(self):
-        return self.create_operator('analyze_top_tracks', self.analysis_service.top_tracks)
+    def top_artists_task(self):
+        return self.create_operator('top_artists', self.analysis_service.get_top_artists)
     
-    def average_metrics_task(self):
-        return self.create_operator('average_metrics', self.analysis_service.average_metrics)
+    def top_songs_by_appearance(self):
+        return self.create_operator('top_songs_appearance', self.analysis_service.get_top_songs_by_appearance)
     
+    def top_albums_by_appearance(self):
+        return self.create_operator('top_albums_appearance', self.analysis_service.get_top_albums_by_appearance)
+    
+    def top_rank_1_songs(self):
+        return self.create_operator('top_rank_1_songs', self.analysis_service.get_top_rank_1_songs)
+    
+    def artist_with_most_unique_rank_1_songs(self):
+        return self.create_operator('artist_with_most_unique_rank_1_songs', self.analysis_service.get_artist_with_most_unique_rank_1_songs)
+    
+    def global_rank_1_songs_details(self):
+        return self.create_operator('global_rank_1_songs_details', self.analysis_service.get_global_rank_1_songs_details)
+
     def run_pipeline(self):
-        self.load_data() >> self.preprocess_data_task() >> [self.top_tracks_task(), self.average_metrics_task()]
+        self.preprocess_data_task() >> [self.top_artists_task(), self.top_songs_by_appearance(), 
+                                        self.top_albums_by_appearance(), self.top_rank_1_songs(),
+                                        self.artist_with_most_unique_rank_1_songs(), self.global_rank_1_songs_details()]
