@@ -21,6 +21,12 @@ class AnalysisService:
             .withColumn('country', iso_to_country_udf(col('country'))) \
             .withColumn('snapshot_date', to_date(col('snapshot_date'))) \
             .withColumn('album_release_date', to_date(col('album_release_date')))
+            .withColumn('artists_array', split(col('artists'), ', ')) \
+            .withColumn('main_artist', expr("artists_array[0]")) \
+            .withColumn('feature_1', expr("artists_array[1]")) \
+            .withColumn('feature_2', expr("artists_array[2]")) \
+            .withColumn('feature_3', expr("artists_array[3]")) \
+            .drop('artists_array', 'artists')
 
         self.etl_service.save_as_parquest(df, 'data/preprocessed_data.parquet')
         return 'Data cleaning completed successfully'
@@ -28,7 +34,7 @@ class AnalysisService:
     def top_tracks(self, input_path='data/preprocessed_data.parquet', limit=10):
         df = self.etl_service.load_parquet(input_path)
         top_tracks_data = df.orderBy(col('popularity').desc()) \
-                            .select('name', 'artists', 'popularity') \
+                            .select('name', 'main_artist', 'popularity') \
                             .limit(limit)
         self.etl_service.save_as_parquest(top_tracks_data, 'data/top_tracks.parquet')
         return 'Top tracks generated successfully'
