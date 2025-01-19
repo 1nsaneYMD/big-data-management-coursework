@@ -19,6 +19,12 @@ class UtilsService:
         return top_songs
     
     @classmethod
+    def get_top_5_artists(cls, data, top_n=5):
+        top_5_artists = cls._get_top_n(data, 'main_artist', top_n)
+        top_5_artists.columns = ['main_artist', 'appearance_count']
+        return top_5_artists
+    
+    @classmethod
     def get_top_albums_by_appearance(cls, data, top_n=10):
         top_albums = cls._get_top_n(data, 'album_name', top_n)
         top_albums.columns = ['album', 'appearance_count']
@@ -43,4 +49,3 @@ class UtilsService:
             .reset_index()
         artist_unique_rank_1.columns = ['artist', 'unique_rank_1_songs']
         return artist_unique_rank_1
-

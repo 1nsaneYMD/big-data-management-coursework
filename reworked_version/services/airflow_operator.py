@@ -34,7 +34,14 @@ class AirflowOperator:
     def global_rank_1_songs_details(self):
         return self.create_operator('global_rank_1_songs_details', self.analysis_service.get_global_rank_1_songs_details)
 
+    def song_popularity_trend(self):
+        return self.create_operator('song_popularity_trend', self.analysis_service.get_song_popularity_trend)
+
+    def top_5_bulgaria_artists(self):
+        return self.create_operator('top_5_bulgaria_artists', self.analysis_service.get_top_5_bulgaria_artists)
+
     def run_pipeline(self):
         self.preprocess_data_task() >> [self.top_artists_task(), self.top_songs_by_appearance(), 
                                         self.top_albums_by_appearance(), self.top_rank_1_songs(),
-                                        self.artist_with_most_unique_rank_1_songs(), self.global_rank_1_songs_details()]
+                                        self.artist_with_most_unique_rank_1_songs(), self.global_rank_1_songs_details(),
+                                        self.song_popularity_trend(), self.top_5_bulgaria_artists()]

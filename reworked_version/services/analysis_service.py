@@ -1,3 +1,5 @@
+import pandas as pd
+
 from services.etl_service import ETLService
 from services.utils import UtilsService
 from services.plot_utils import PlotUtilsService
@@ -21,6 +23,11 @@ class AnalysisService:
 
     def _generate_line_plot(self, data, filename):
         fig = PlotUtilsService.plot_line_plot(data)
+        fig.savefig(filename)
+        PlotUtilsService.close_figure(fig)
+
+    def _generate_line_plot_song_popularity(self, data, filename):
+        fig = PlotUtilsService.plot_line_plot_song_popularity(data)
         fig.savefig(filename)
         PlotUtilsService.close_figure(fig)
 
@@ -72,8 +79,26 @@ class AnalysisService:
     
     def get_global_rank_1_songs_details(self):
         tracks_df = self.etl_service.load_csv_into_dataframe('data/tracks_cleaned.csv')
+        tracks_df['snapshot_date'] = pd.to_datetime(tracks_df['snapshot_date'])
         self._generate_line_plot(tracks_df, 'global_rank_1_songs_details.png')
         return 'Global rank 1 songs details line plot generated successfully'
+    
+    def get_song_popularity_trend(self):
+        tracks_df = self.etl_service.load_csv_into_dataframe('data/tracks_cleaned.csv')
+        tracks_df['snapshot_date'] = pd.to_datetime(tracks_df['snapshot_date'])
+        tracks_df['album_release_date'] = pd.to_datetime(tracks_df['album_release_date'])
+        self._generate_line_plot_song_popularity(tracks_df, 'song_popularity_trend.png')
+        return 'Song popularity trend line plot generated successfully'
+    
+    def get_top_5_bulgaria_artists(self):
+        tracks_df = self.etl_service.load_csv_into_dataframe('data/tracks_cleaned.csv')
+        bulgaria_tracks = tracks_df[tracks_df['country'] == 'Bulgaria']
+        top_5_artists = UtilsService.get_top_5_artists(bulgaria_tracks)
+        self._generate_bar_plot(top_5_artists, 'main_artist', 'appearance_count',
+                                'Top 5 Artists with Most Appearances in Bulgaria', 'Artist',
+                                'Number of Appearances', 'top_5_bulgaria_artists.png')
+        return 'Top 5 bulgaria artists bar plot generated successfully'
+    
 
 # rm -rf ~/airflow/dags
 # airflow standalone

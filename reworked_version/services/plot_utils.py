@@ -43,3 +43,21 @@ class PlotUtilsService:
         plt.tight_layout()
         
         return fig
+
+    @classmethod
+    def plot_line_plot_song_popularity(cls, data):
+        song_popularity = data[data['name'] == "All I Want for Christmas Is You"]
+
+        fig = plt.figure(figsize=(14, 6))
+
+        plt.plot(song_popularity['snapshot_date'], song_popularity['popularity'], color='crimson')
+        plt.title('Popularity Trend of "All I Want for Christmas Is You"', fontsize=16)
+        plt.xlabel('Date', fontsize=12)
+        plt.ylabel('Popularity', fontsize=12)
+
+        plt.xticks(rotation=45)
+        plt.grid(axis='y', linestyle='--', alpha=0.7)
+
+        plt.tight_layout()
+
+        return fig
