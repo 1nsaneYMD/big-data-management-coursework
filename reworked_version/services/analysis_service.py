@@ -78,7 +78,3 @@ class AnalysisService:
 # rm -rf ~/airflow/dags
 # airflow standalone
 # cp -r ./reworked_version ~/airflow/dags
-if __name__ == '__main__':
-    ss = AnalysisService()
-    ss.preprocess_data()
-    ss.get_global_rank_1_songs_details()
