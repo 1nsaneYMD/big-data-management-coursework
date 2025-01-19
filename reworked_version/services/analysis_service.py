@@ -1,7 +1,7 @@
 from services.etl_service import ETLService
 from services.utils import get_continent_udf, iso_to_country_name
 from pyspark.sql import DataFrame
-from pyspark.sql.functions import col, avg, max, min, when, lit, to_date
+from pyspark.sql.functions import col, avg, max, min, when, lit, to_date, split, expr
 
 class AnalysisService:
     def __init__(self):
@@ -20,7 +20,7 @@ class AnalysisService:
             .withColumn('continent', get_continent_udf_spark(col('country'))) \
             .withColumn('country', iso_to_country_udf(col('country'))) \
             .withColumn('snapshot_date', to_date(col('snapshot_date'))) \
-            .withColumn('album_release_date', to_date(col('album_release_date')))
+            .withColumn('album_release_date', to_date(col('album_release_date'))) \
             .withColumn('artists_array', split(col('artists'), ', ')) \
             .withColumn('main_artist', expr("artists_array[0]")) \
             .withColumn('feature_1', expr("artists_array[1]")) \
