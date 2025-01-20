@@ -74,6 +74,13 @@ Install any other dependencies required by the DAG, including those from
 
 *pip install -r requirements.txt*
 
+### **4. Download Kaggle Dataset**
+
+  
+
+Run *download_dataset.py* to download the dataset used in the pipeline.
+
+
   
 
 ## **Running the DAG**
