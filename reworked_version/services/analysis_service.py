@@ -9,7 +9,7 @@ class AnalysisService:
     def __init__(self):
         self.etl_service = ETLService()
     
-    def preprocess_data(self, input_path='data/big_data.csv'):
+    def preprocess_data(self, input_path='data/universal_top_spotify_songs.csv'):
         df = self.etl_service.load_csv_into_dataframe(input_path)
         tracks, artists = preprocess_data(df)
 
